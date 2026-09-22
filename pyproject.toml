@@ -1,0 +1,21 @@
+[project]
+name = "skillscan"
+version = "0.4.0"
+description = "Static risk scanner for Claude SKILL.md files and their install.sh"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []          # skillscan itself: standard library only, by design
+
+[project.optional-dependencies]
+docscan = ["python-docx>=1.1", "pdfminer.six>=20240706", "pypdf>=4.0"]
+
+[project.scripts]
+skillscan = "skillscan.cli:main"
+docscan = "skillscan.docscan.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/skillscan"]

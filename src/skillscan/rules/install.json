@@ -1,0 +1,103 @@
+{
+  "_comment": "C-axis: supply-chain / install-script danger across .sh and .ps1. `hard` findings force QUARANTINE. Line continuations are normalized before matching so `curl ... \\<newline> | bash` is caught.",
+  "patterns": [
+    {
+      "id": "remote_to_shell",
+      "weight": 10,
+      "hard": true,
+      "scope": "pipeline",
+      "regex": "(?i)\\b(curl|wget|fetch)\\b[^|]*\\|\\s*(sudo\\s+)?(bash|sh|zsh|python3?)\\b"
+    },
+    {
+      "id": "b64_pipe_shell",
+      "weight": 9,
+      "hard": true,
+      "scope": "pipeline",
+      "regex": "(?i)base64\\s+-d[^|]*\\|\\s*(bash|sh)\\b"
+    },
+    {
+      "id": "eval_download",
+      "weight": 9,
+      "hard": true,
+      "scope": "command",
+      "regex": "(?i)eval\\s+\"?\\$\\((curl|wget)"
+    },
+    {
+      "id": "sudo_use",
+      "weight": 4,
+      "hard": false,
+      "scope": "command",
+      "regex": "(?i)\\bsudo\\b"
+    },
+    {
+      "id": "write_autoload",
+      "weight": 6,
+      "hard": false,
+      "scope": "command",
+      "regex": "(?i)(>|cp|mv|tee|install)\\s+.{0,60}(~/\\.claude|\\.claude/skills|\\.config/claude|autoload)"
+    },
+    {
+      "id": "read_secrets",
+      "weight": 7,
+      "hard": false,
+      "scope": "command",
+      "regex": "(?i)(cat|cp|tar|zip)\\s+.{0,40}(~/\\.ssh|\\.env|\\.aws|\\.git-credentials|id_rsa|\\.npmrc)"
+    },
+    {
+      "id": "outbound_secret",
+      "weight": 8,
+      "hard": true,
+      "scope": "pipeline",
+      "regex": "(?i)(~/\\.ssh|\\.env|\\.aws|token|secret)[^|]*\\|[^|]*\\b(curl|wget|nc|ncat)\\b"
+    },
+    {
+      "id": "disable_history",
+      "weight": 3,
+      "hard": false,
+      "scope": "command",
+      "regex": "(?i)(unset HISTFILE|history -c|set \\+o history)"
+    },
+    {
+      "id": "chmod_downloaded",
+      "weight": 3,
+      "hard": false,
+      "scope": "command",
+      "regex": "(?i)chmod\\s+\\+x\\s+.{0,40}(/tmp/|\\./)"
+    },
+    {
+      "id": "procsub_shell",
+      "weight": 10,
+      "hard": true,
+      "scope": "command",
+      "regex": "(?i)\\b(bash|sh|zsh)\\b\\s+<\\(\\s*(curl|wget|fetch)\\b"
+    },
+    {
+      "id": "shdashc_download",
+      "weight": 10,
+      "hard": true,
+      "scope": "command",
+      "regex": "(?i)\\b(bash|sh|zsh)\\b[^\\n]*-c\\b[^\\n]*\\$\\((curl|wget|fetch)\\b"
+    },
+    {
+      "id": "ps_iex_download",
+      "weight": 10,
+      "hard": true,
+      "scope": "command",
+      "regex": "(?i)\\b(iex|invoke-expression)\\b[^\\n]*\\b(irm|iwr|invoke-restmethod|invoke-webrequest|downloadstring|net\\.webclient)\\b"
+    },
+    {
+      "id": "ps_download_run",
+      "weight": 9,
+      "hard": true,
+      "scope": "command",
+      "regex": "(?i)(irm|iwr|invoke-restmethod|invoke-webrequest)\\b[^\\n]*\\|\\s*(iex|invoke-expression)\\b"
+    },
+    {
+      "id": "ps_bypass_policy",
+      "weight": 5,
+      "hard": false,
+      "scope": "command",
+      "regex": "(?i)-executionpolicy\\s+bypass|-ep\\s+bypass|-nop\\b|-windowstyle\\s+hidden|-enc(odedcommand)?\\b"
+    }
+  ]
+}

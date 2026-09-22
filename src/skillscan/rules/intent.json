@@ -1,0 +1,58 @@
+{
+  "_comment": "A-axis: offensive INTENT categories. Short/ambiguous tokens (rce, c2, suid, privesc, opsec, pivot, beacon, keylog) are matched with word boundaries to avoid substrings (EC2, source, pivot table). Category terms only, never payloads. Capped as a tag downstream.",
+  "base_weight": 1.0,
+  "categories": {
+    "evasion": [
+      "edr evasion",
+      "av evasion",
+      "amsi bypass",
+      "defender bypass",
+      "obfuscat",
+      "anti-forensic",
+      "log wiping",
+      "opsec"
+    ],
+    "exploitation": [
+      "exploit development",
+      "shellcode",
+      "payload",
+      "reverse shell",
+      "rce",
+      "remote code execution",
+      "buffer overflow",
+      "weaponiz"
+    ],
+    "privesc": [
+      "privilege escalation",
+      "privesc",
+      "suid",
+      "kernel exploit",
+      "token impersonation",
+      "uac bypass"
+    ],
+    "lateral": [
+      "lateral movement",
+      "pass-the-hash",
+      "pass the hash",
+      "kerberoast",
+      "pivot",
+      "c2",
+      "command and control",
+      "beacon"
+    ],
+    "exfiltration": [
+      "exfiltrat",
+      "data theft",
+      "dump credentials",
+      "credential harvest",
+      "keylog"
+    ],
+    "access": [
+      "initial access",
+      "phishing",
+      "container escape",
+      "sandbox escape",
+      "persistence backdoor"
+    ]
+  }
+}
